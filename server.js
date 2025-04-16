@@ -41,41 +41,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// ROTA EXPLÍCITA PARA DEBUGAR O INDEX.HTML
-app.get("/", (req, res, next) => {
-  const indexPath = path.join(__dirname, "index.html");
-  console.log(`[Debug Rota /] Tentando servir: ${indexPath}`);
-
-  // Verificar se o arquivo existe e é legível ANTES de tentar enviar
-  fs.access(indexPath, fs.constants.R_OK, (err) => {
-    if (err) {
-      console.error(`[Debug Rota /] Erro ao acessar index.html: ${err}`);
-      // Se não encontrar aqui, o problema é sério (build/deploy?)
-      // Deixar passar para outros middlewares/rotas (embora não deva ter outras para /)
-      // Ou enviar um 404 customizado
-      res
-        .status(404)
-        .send(`Debug: index.html não encontrado ou ilegível em ${indexPath}`);
-      // next(); // Alternativamente, chame next() para ver se algo mais pega o erro 404 padrão
-    } else {
-      console.log(`[Debug Rota /] Arquivo index.html encontrado. Enviando...`);
-      res.sendFile(indexPath, (sendFileErr) => {
-        if (sendFileErr) {
-          console.error(
-            `[Debug Rota /] Erro ao enviar index.html: ${sendFileErr}`
-          );
-          // Importante: Não tente enviar outra resposta se os headers já foram enviados
-          if (!res.headersSent) {
-            res.status(500).send("Debug: Erro ao enviar index.html");
-          }
-        } else {
-          console.log(`[Debug Rota /] index.html enviado com sucesso.`);
-        }
-      });
-    }
-  });
-});
-
 // --- Inicialização de Clientes de API ---
 
 // Cliente OpenAI (lê OPENAI_API_KEY do ambiente)
