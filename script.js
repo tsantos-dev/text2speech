@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
   console.log("ID do usuário:", userId);
 
   // Atualizar links de download com ID do usuário e endereço absoluto
-  downloadTextLink.href = `https://tavolacriativa.com.br/t2s/download-texts/${userId}`;
+  downloadTextLink.href = `/download-texts/${userId}`;
   // Não usar o href pra mindmap, será tratado pelo evento de clique
 
   // Carregar histórico inicial
@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Função para carregar o histórico
   function loadHistory() {
     console.log(`Carregando histórico para usuário: ${userId}`);
-    const url = `https://tavolacriativa.com.br/t2s/history/${userId}`;
+    const url = `/history/${userId}`;
     console.log(`URL da requisição: ${url}`);
 
     fetch(url)
@@ -126,13 +126,9 @@ document.addEventListener("DOMContentLoaded", function () {
       // Pegar o tema atual, se estiver preenchido
       const currentTheme = themeInput.value.trim() || DEFAULT_THEME;
 
-      console.log(
-        `Enviando requisição para: https://tavolacriativa.com.br/t2s/mindmap/${userId}`
-      );
+      console.log(`Enviando requisição para: /mindmap/${userId}`);
       const response = await fetch(
-        `https://tavolacriativa.com.br/t2s/mindmap/${userId}?theme=${encodeURIComponent(
-          currentTheme
-        )}`,
+        `/mindmap/${userId}?theme=${encodeURIComponent(currentTheme)}`,
         {
           method: "GET",
           headers: {
@@ -513,20 +509,17 @@ document.addEventListener("DOMContentLoaded", function () {
     try {
       console.log(`Solicitando geração de mapa mental para usuário: ${userId}`);
 
-      const response = await fetch(
-        "https://tavolacriativa.com.br/t2s/generate-mermaid-map",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "text/plain",
-            "Cache-Control": "no-cache, no-store, must-revalidate",
-            Pragma: "no-cache", // Para compatibilidade
-            Expires: "0", // Para compatibilidade
-          },
-          body: JSON.stringify({ userId: userId }),
-        }
-      );
+      const response = await fetch("/generate-mermaid-map", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "text/plain",
+          "Cache-Control": "no-cache, no-store, must-revalidate",
+          Pragma: "no-cache", // Para compatibilidade
+          Expires: "0", // Para compatibilidade
+        },
+        body: JSON.stringify({ userId: userId }),
+      });
 
       console.log(
         "Resposta do /generate-mermaid-map recebida, status:",
@@ -657,17 +650,14 @@ document.addEventListener("DOMContentLoaded", function () {
         gender,
         userId,
       });
-      const response = await fetch(
-        "https://tavolacriativa.com.br/t2s/synthesize",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "audio/mp3",
-          },
-          body: JSON.stringify({ text, theme, gender, userId }),
-        }
-      );
+      const response = await fetch("/synthesize", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "audio/mp3",
+        },
+        body: JSON.stringify({ text, theme, gender, userId }),
+      });
 
       console.log("Status da resposta:", response.status);
       console.log(
