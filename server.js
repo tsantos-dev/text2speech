@@ -33,14 +33,16 @@ app.use(bodyParser.json());
 
 // Servir arquivos estáticos da raiz (ajuste se seu HTML/CSS/JS estiver em outra pasta, ex: 'public')
 // app.use(express.static("."));
-// app.use(express.static(path.join(__dirname, ".")));
-app.use(express.static(staticDir, { index: "index.html" }));
+app.use(express.static(path.join(__dirname, ".")));
 
 // Middleware para log de requisições
 app.use((req, res, next) => {
   console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
   next();
 });
+
+// ROTA EXPLÍCITA PARA DEBUGAR O INDEX.HTML
+//
 
 // --- Inicialização de Clientes de API ---
 
