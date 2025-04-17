@@ -29,16 +29,11 @@ app.use(
 console.log(`CORS configurado para permitir origem: ${allowedOrigin}`);
 
 // --- Middlewares ---
-app.use((req, res, next) => {
-  console.log(`Incoming request for ${req.originalUrl}`);
-  next();
-});
-
 app.use(bodyParser.json());
 
 // Servir arquivos estáticos da raiz (ajuste se seu HTML/CSS/JS estiver em outra pasta, ex: 'public')
 // app.use(express.static("."));
-app.use(express.static(path.join(__dirname, ".")));
+app.use(express.static(path.join(__dirname, "public")));
 
 // Middleware para log de requisições
 app.use((req, res, next) => {
