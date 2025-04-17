@@ -31,59 +31,13 @@ console.log(`CORS configurado para permitir origem: ${allowedOrigin}`);
 // --- Middlewares ---
 app.use(bodyParser.json());
 
-// --- DEBUG: Logar o diretório base e verificar index.html ANTES do static ---
-const staticDir = path.join(__dirname, ".");
-console.log(
-  `[DEBUG PRE-STATIC] Diretório base para arquivos estáticos: ${staticDir}`
-);
-const indexPathPre = path.join(staticDir, "index.html");
-try {
-  fs.accessSync(indexPathPre, fs.constants.R_OK);
-  console.log(
-    `[DEBUG PRE-STATIC] index.html encontrado e legível em: ${indexPathPre}`
-  );
-} catch (err) {
-  console.error(
-    `[DEBUG PRE-STATIC] ERRO ao acessar index.html em ${indexPathPre}: ${err.message}`
-  );
-}
-// ---------------------------------------------------------------------------
-
 // Servir arquivos estáticos da raiz (ajuste se seu HTML/CSS/JS estiver em outra pasta, ex: 'public')
 // app.use(express.static("."));
 // app.use(express.static(path.join(__dirname, ".")));
+
 app.use(express.static(staticDir, { index: "index.html" }));
 
 // Middleware para log de requisições
-app.use((req, res, next) => {
-  console.log(
-    `[DEBUG POST-STATIC] Requisição ${req.method} ${req.url} NÃO foi servida pelo express.static.`
-  );
-  // Vamos verificar se o arquivo que deveria ter sido servido existe
-  // Lida com requisição para diretório (/) buscando index.html
-  const requestedFile = req.url === "/" ? "index.html" : req.url;
-  // Remove query string, se houver
-  const filePathToCheck = path.join(staticDir, requestedFile.split("?")[0]);
-
-  console.log(
-    `[DEBUG POST-STATIC] Verificando existência de: ${filePathToCheck}`
-  );
-  fs.access(filePathToCheck, fs.constants.R_OK, (err) => {
-    if (err) {
-      console.error(
-        `[DEBUG POST-STATIC] Arquivo NÃO encontrado ou ilegível: ${filePathToCheck} - Erro: ${err.code}`
-      );
-    } else {
-      // Se o arquivo existe aqui, é MUITO estranho o static não ter pego.
-      console.warn(
-        `[DEBUG POST-STATIC] Arquivo ENCONTRADO e legível: ${filePathToCheck}. Por que express.static não o serviu?`
-      );
-    }
-    next(); // Continua para as próximas rotas (API ou 404 final)
-  });
-});
-
-// Middleware para log de requisições (seu logger original)
 app.use((req, res, next) => {
   console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
   next();
