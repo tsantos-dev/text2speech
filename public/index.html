@@ -229,27 +229,27 @@
       </div>
     </div>
 
-    <script>
+    <!-- <script>
       // Carregar script principal diretamente
       document.addEventListener("DOMContentLoaded", function () {
         // Checar se o servidor está disponível
-        fetch("http://localhost:8080")
+        fetch("http://localhost:3000")
           .then((response) => {
             console.log("Servidor disponível:", response.status);
           })
           .catch((err) => {
             console.error("Erro ao conectar ao servidor:", err);
             alert(
-              "Não foi possível conectar ao servidor. Verifique se o servidor está rodando na porta 8080."
+              "Não foi possível conectar ao servidor. Verifique se o servidor está rodando na porta 3000."
             );
           });
       });
-    </script>
+    </script> -->
     <script src="script.js"></script>
     <script>
       // Inicializar Mermaid (opcional, mas bom para garantir)
       // startOnLoad: false porque vamos chamar .run() manualmente
-      mermaid.initialize({ startOnLoad: false, theme: "default" }); // 'default', 'forest', 'dark', 'neutral'
+      mermaid.initialize({ startOnLoad: false, theme: "dark" }); // 'default', 'forest', 'dark', 'neutral'
     </script>
   </body>
 </html>
