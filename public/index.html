@@ -233,14 +233,14 @@
       // Carregar script principal diretamente
       document.addEventListener("DOMContentLoaded", function () {
         // Checar se o servidor está disponível
-        fetch("http://localhost:3000")
+        fetch("http://localhost:8080")
           .then((response) => {
             console.log("Servidor disponível:", response.status);
           })
           .catch((err) => {
             console.error("Erro ao conectar ao servidor:", err);
             alert(
-              "Não foi possível conectar ao servidor. Verifique se o servidor está rodando na porta 3000."
+              "Não foi possível conectar ao servidor. Verifique se o servidor está rodando na porta 8080."
             );
           });
       });
