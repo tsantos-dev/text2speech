@@ -145,14 +145,14 @@ function getUserTextFile(userId) {
 // --- Rotas da API ---
 
 // Rota Raiz (Verificação)
-// app.get("/", (req, res) => {
-//   res
-//     .status(200)
-//     .send(
-//       "Servidor Text-to-Speech e Mapa Mental rodando. CORS habilitado para: " +
-//         allowedOrigin
-//     );
-// });
+app.get("/", (req, res) => {
+  res
+    .status(200)
+    .send(
+      "Servidor Text-to-Speech e Mapa Mental rodando. CORS habilitado para: " +
+        allowedOrigin
+    );
+});
 
 // Rota para converter texto para fala
 app.post("/synthesize", async (req, res) => {

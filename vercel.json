@@ -5,5 +5,27 @@
       "src": "server.js",
       "use": "@vercel/node"
     }
+  ],
+  "routes": [
+    {
+      "src": "/synthesize",
+      "methods": ["POST"],
+      "dest": "/server.js"
+    },
+    {
+      "src": "/history/(.*)",
+      "methods": ["GET"],
+      "dest": "/server.js"
+    },
+    {
+      "src": "/download-texts/(.*)",
+      "methods": ["GET"],
+      "dest": "/server.js"
+    },
+    {
+      "src": "/generate-mermaid-map",
+      "methods": ["POST"],
+      "dest": "/server.js"
+    }
   ]
 }
