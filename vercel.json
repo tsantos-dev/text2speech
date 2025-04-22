@@ -6,6 +6,12 @@
       "use": "@vercel/node"
     }
   ],
+  "rewrites": [
+    {
+      "src": "/(.*)",
+      "dest": "public/$1"
+    }
+  ],
   "routes": [
     {
       "src": "/synthesize",
