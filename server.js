@@ -390,7 +390,7 @@ ${historyContent}
 app.listen(port, () => {
   console.log(`Servidor rodando na porta ${port}`);
   console.log(
-    `Acessível (localmente) em hhttps://t2s-tavola.vercel.app:${port}`
+    `Acessível (localmente) em https://t2s-tavola.vercel.app:${port}`
   );
 });
 
