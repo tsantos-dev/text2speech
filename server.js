@@ -41,9 +41,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// ROTA EXPLÍCITA PARA DEBUGAR O INDEX.HTML
-//
-
 // --- Inicialização de Clientes de API ---
 
 // Cliente OpenAI (lê OPENAI_API_KEY do ambiente)
