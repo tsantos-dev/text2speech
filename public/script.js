@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
     localStorage.setItem("textToSpeechUserId", userId);
   }
   // Para teste, usar ID fixo
-  userId = "test_user";
+  // userId = "test_user";
   console.log("ID do usuário:", userId);
 
   // Atualizar links de download com ID do usuário e endereço absoluto
