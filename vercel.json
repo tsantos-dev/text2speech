@@ -26,6 +26,11 @@
       "src": "/generate-mermaid-map",
       "methods": ["POST"],
       "dest": "/server.js"
+    },
+
+    {
+      "src": "/",
+      "dest": "/public/index.html"
     }
   ]
 }
