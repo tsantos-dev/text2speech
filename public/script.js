@@ -654,7 +654,7 @@ document.addEventListener("DOMContentLoaded", function () {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Accept: "audio/wav",
+          Accept: "audio/ogg",
         },
         body: JSON.stringify({ text, theme, gender, userId }),
       });

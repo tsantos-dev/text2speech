@@ -188,7 +188,7 @@ app.post("/synthesize", async (req, res) => {
       input: { text: text },
       voice: { languageCode: "pt-BR", ssmlGender: ssmlGender },
       // audioConfig: { audioEncoding: "MP3" },
-      audioConfig: { audioEncoding: "LINEAR16" },
+      audioConfig: { audioEncoding: "OGG_OPUS" },
     };
 
     console.log("Enviando requisição para Google TTS (texto truncado):", {
@@ -211,7 +211,7 @@ app.post("/synthesize", async (req, res) => {
 
     // Enviar o áudio gerado como resposta
     // res.set("Content-Type", "audio/mp3");
-    res.set("Content-Type", "audio/wav");
+    res.set("Content-Type", "audio/ogg");
     res.send(audioContent);
     console.log("Áudio gerado e enviado com sucesso para o cliente.");
   } catch (error) {
