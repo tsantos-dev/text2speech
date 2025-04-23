@@ -187,7 +187,8 @@ app.post("/synthesize", async (req, res) => {
     const ttsRequest = {
       input: { text: text },
       voice: { languageCode: "pt-BR", ssmlGender: ssmlGender },
-      audioConfig: { audioEncoding: "MP3" },
+      // audioConfig: { audioEncoding: "MP3" },
+      audioConfig: { audioEncoding: "LINEAR16" },
     };
 
     console.log("Enviando requisição para Google TTS (texto truncado):", {
@@ -209,13 +210,15 @@ app.post("/synthesize", async (req, res) => {
     );
 
     // Enviar o áudio gerado como resposta
-    res.set("Content-Type", "audio/mp3");
+    // res.set("Content-Type", "audio/mp3");
+    res.set("Content-Type", "audio/wav");
     res.send(audioContent);
     console.log("Áudio gerado e enviado com sucesso para o cliente.");
   } catch (error) {
     console.error("Erro no endpoint /synthesize:", error);
     const errorMessage = error.details || error.message || "Erro desconhecido";
     let statusCode = 500;
+
     // Mapear códigos de erro específicos do Google TTS se disponíveis
     if (error.code) {
       if (error.code === 3 || error.code === 9)
