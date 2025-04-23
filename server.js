@@ -187,6 +187,10 @@ app.post("/synthesize", async (req, res) => {
     const ttsRequest = {
       input: { text: text },
       // voice: { languageCode: "pt-BR", ssmlGender: ssmlGender },
+      voice: {
+        languageCode: "pt-BR",
+        name: gender === "female" ? "pt-BR-Standard-A" : "pt-BR-Standard-B",
+      },
       // audioConfig: { audioEncoding: "MP3" },
       audioConfig: { audioEncoding: "OGG_OPUS" },
     };
