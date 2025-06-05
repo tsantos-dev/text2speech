@@ -390,6 +390,7 @@ app.post("/generate-mermaid-map", async (req, res) => {
 
     console.log(`Gerando mapa mental Mermaid para ${userId}...`);
 
+    // Rever esse mapa mental para melhorias.
     const prompt = `
 Crie um mapa mental conciso e hierárquico baseado no conteúdo do histórico de textos abaixo.
 Use a sintaxe Mermaid (graph TD).
