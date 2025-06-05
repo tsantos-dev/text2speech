@@ -67,9 +67,12 @@ try {
     type: "service_account",
     project_id: process.env.GOOGLE_PROJECT_ID,
     private_key_id: process.env.GOOGLE_PRIVATE_KEY_ID,
-    // A chave privada lida do ambiente deve ter as quebras de linha corretas
-    // A Vercel geralmente preserva as quebras de linha ao colar
-    private_key: process.env.GOOGLE_PRIVATE_KEY,
+    // A chave privada DEVE ser a string PEM completa, incluindo -----BEGIN...----- e -----END...----
+    // e com quebras de linha reais (\n).
+    // O .replace() abaixo é uma salvaguarda se o ambiente fornecer literais \\n.
+    private_key: process.env.GOOGLE_PRIVATE_KEY
+      ? process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, "\n")
+      : undefined,
     client_email: process.env.GOOGLE_CLIENT_EMAIL,
     client_id: process.env.GOOGLE_CLIENT_ID,
     auth_uri: "https://accounts.google.com/o/oauth2/auth",
@@ -79,6 +82,51 @@ try {
     universe_domain: "googleapis.com",
   };
 
+  // --- INÍCIO DOS LOGS DE DEPURAÇÃO ADICIONAIS ---
+  console.log(
+    "DEBUG: GOOGLE_PROJECT_ID:",
+    process.env.GOOGLE_PROJECT_ID ? "Definido" : "NÃO DEFINIDO"
+  );
+  console.log(
+    "DEBUG: GOOGLE_CLIENT_EMAIL:",
+    process.env.GOOGLE_CLIENT_EMAIL ? "Definido" : "NÃO DEFINIDO"
+  );
+  console.log(
+    "DEBUG: GOOGLE_PRIVATE_KEY (raw from env):",
+    process.env.GOOGLE_PRIVATE_KEY
+      ? `Tipo: ${typeof process.env
+          .GOOGLE_PRIVATE_KEY}, Primeiros 50 chars: [${process.env.GOOGLE_PRIVATE_KEY.substring(
+          0,
+          50
+        )}...]`
+      : "NÃO DEFINIDO"
+  );
+  if (process.env.GOOGLE_PRIVATE_KEY) {
+    console.log(
+      "DEBUG: GOOGLE_PRIVATE_KEY (raw from env) - Contém \\n literal?",
+      process.env.GOOGLE_PRIVATE_KEY.includes("\\n")
+    );
+    console.log(
+      "DEBUG: GOOGLE_PRIVATE_KEY (raw from env) - Contém \n real?",
+      process.env.GOOGLE_PRIVATE_KEY.includes("\n")
+    );
+  }
+  console.log(
+    "DEBUG: private_key (após replace):",
+    googleCredentials.private_key
+      ? `Tipo: ${typeof googleCredentials.private_key}, Primeiros 50 chars: [${googleCredentials.private_key.substring(
+          0,
+          50
+        )}...]`
+      : "NÃO DEFINIDO",
+    googleCredentials.private_key
+      ? `Últimos 50 chars: [...${googleCredentials.private_key.substring(
+          googleCredentials.private_key.length - 50
+        )}]`
+      : "NÃO DEFINIDO"
+  );
+  // --- FIM DOS LOGS DE DEPURAÇÃO ADICIONAIS ---
+
   // Verificar se as credenciais essenciais foram carregadas
   if (
     !googleCredentials.project_id ||
@@ -87,6 +135,16 @@ try {
   ) {
     throw new Error(
       "Credenciais essenciais do Google Cloud (PROJECT_ID, CLIENT_EMAIL, PRIVATE_KEY) não encontradas nas variáveis de ambiente."
+    );
+  }
+
+  // Verificação adicional do formato da chave privada
+  if (
+    !googleCredentials.private_key.startsWith("-----BEGIN PRIVATE KEY-----") ||
+    !googleCredentials.private_key.trim().endsWith("-----END PRIVATE KEY-----")
+  ) {
+    throw new Error(
+      "Formato da GOOGLE_PRIVATE_KEY inválido. Deve ser a string PEM completa, incluindo cabeçalho e rodapé."
     );
   }
 
